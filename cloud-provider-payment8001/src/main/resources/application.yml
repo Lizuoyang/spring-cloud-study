@@ -25,8 +25,15 @@ eureka:
   instance:
     instance-id: payment8001
     prefer-ip-address: true
+    #向服务端发送心跳包的时间间隔（秒）
+    lease-expiration-duration-in-seconds: 1
+    #服务端收到最后一次心跳的等待时间上线（秒），超时将剔除服务
+    lease-renewal-interval-in-seconds: 2
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+      #集群模式
+#      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+      #单机模式
+      defaultZone: http://eureka7001.com:7001/eureka
