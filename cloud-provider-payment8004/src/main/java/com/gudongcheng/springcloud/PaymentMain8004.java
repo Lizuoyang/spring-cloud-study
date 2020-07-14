@@ -12,8 +12,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  **/
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ZkServerMain7003 {
+public class PaymentMain8004 {
     public static void main(String[] args) {
-        SpringApplication.run(ZkServerMain7003.class);
+        SpringApplication.run(PaymentMain8004.class);
     }
 }
