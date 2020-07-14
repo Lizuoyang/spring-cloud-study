@@ -16,6 +16,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @Slf4j
 public class OrderMainZk80 {
     public static void main(String[] args) {
-        SpringApplication.run(OrderMainZk80.class);
+        SpringApplication.run(OrderMainZk80.class, args);
     }
 }
