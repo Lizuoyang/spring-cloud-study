@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cloud-order-service
+    name: cloud-consumer-order
   cloud:
     zookeeper:
       connect-string: localhost:2181
