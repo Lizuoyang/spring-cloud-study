@@ -33,6 +33,11 @@ public class PaymentController {
     @Value("${server.port}")
     private String serverPort;
 
+    @GetMapping("/payment/loadbalance")
+    public ResponseMessage getLoadbalance() {
+        return ResponseMessage.ok("request port : " + serverPort,"");
+    }
+
     @GetMapping("/payment/list")
     public ResponseMessage listPayments() {
         log.info("开始查询数据");

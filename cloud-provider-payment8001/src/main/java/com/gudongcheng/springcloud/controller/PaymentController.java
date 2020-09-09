@@ -3,20 +3,14 @@ package com.gudongcheng.springcloud.controller;
 import com.gudongcheng.springcloud.common.ResponseMessage;
 import com.gudongcheng.springcloud.entities.Payment;
 import com.gudongcheng.springcloud.service.PaymentService;
-import jdk.nashorn.internal.ir.ReturnNode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -44,6 +38,11 @@ public class PaymentController {
 
     @Value("${server.port}")
     private String serverPort;
+
+    @GetMapping("/payment/loadbalance")
+    public ResponseMessage getLoadbalance() {
+        return ResponseMessage.ok("request port : " + serverPort,"");
+    }
 
     @GetMapping("/payment/discovery")
     public Object discovery() {
