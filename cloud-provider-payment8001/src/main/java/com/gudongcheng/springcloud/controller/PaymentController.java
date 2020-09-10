@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -99,5 +100,15 @@ public class PaymentController {
             return ResponseMessage.ok(rows, "修改成功");
         }
         return ResponseMessage.ok(rows, "修改失败");
+    }
+
+    @GetMapping("/payment/feign/timeout")
+    public ResponseMessage timeOut() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseMessage.ok(serverPort, null);
     }
 }
