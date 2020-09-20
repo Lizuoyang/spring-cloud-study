@@ -3,6 +3,7 @@ package com.gudongcheng.springcloud.controller;
 import com.gudongcheng.springcloud.common.ResponseMessage;
 import com.gudongcheng.springcloud.entities.Payment;
 import com.gudongcheng.springcloud.feign.PaymentFeignService;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * @version: V1.0
  * @modified:
  **/
+@DefaultProperties(defaultFallback = "paymentDefaultFallback")
 @RestController
 public class OrderController {
 
@@ -59,8 +61,14 @@ public class OrderController {
         return "8001支付服务系统超时或者系统报错，/(ㄒoㄒ)/~~, id = " + id;
     }
 
+    @HystrixCommand
     @GetMapping("/consumer/payment/hystrix/ok/{id}")
     public String hystrixOk(@PathVariable Integer id) {
+        int number = 10 / 0;
         return paymentFeignService.hystrixOk(id);
+    }
+
+    public String paymentDefaultFallback() {
+        return "Hystrix 全局异常处理信息，请稍后再试，/(ㄒoㄒ)/~~";
     }
 }
