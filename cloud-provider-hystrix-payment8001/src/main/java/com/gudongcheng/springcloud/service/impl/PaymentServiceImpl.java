@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gudongcheng.springcloud.entities.Payment;
 import com.gudongcheng.springcloud.mapper.PaymentMapper;
 import com.gudongcheng.springcloud.service.PaymentService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,14 +52,22 @@ public class PaymentServiceImpl extends ServiceImpl<PaymentMapper, Payment> impl
         return "访问成功，线程名称：" + Thread.currentThread().getName() + ",id = " + id;
     }
 
+    @HystrixCommand(fallbackMethod = "hystrixTimeoutFallback", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+    })
     @Override
     public String hystrixTimeout(Integer id) {
-        Integer seconds = 3000;
-        try {
-            Thread.sleep(seconds);
+        Integer seconds = 5;
+        int age = 10 / 0;
+        /*try {
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        return "访问超时，线程名称：" + Thread.currentThread().getName() + ",id = " + id + ", 耗时： " + seconds / 1000;
+        }*/
+        return "访问超时，线程名称：" + Thread.currentThread().getName() + ",id = " + id + ", 耗时： " + seconds + "秒，(*^_^*)";
+    }
+
+    public String hystrixTimeoutFallback(Integer id) {
+        return "系统繁忙或者运行报错，线程名称：" + Thread.currentThread().getName() + ",id = " + id + "/(ㄒoㄒ)/~~";
     }
 }
