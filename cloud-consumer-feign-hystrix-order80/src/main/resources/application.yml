@@ -19,3 +19,7 @@ ribbon:
 logging:
   level:
     com.gudongcheng.springcloud.feign.PaymentFeignService: debug
+
+feign:
+  hystrix:
+    enabled: true

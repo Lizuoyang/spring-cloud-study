@@ -9,6 +9,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * <p>
  *
@@ -53,17 +55,17 @@ public class PaymentServiceImpl extends ServiceImpl<PaymentMapper, Payment> impl
     }
 
     @HystrixCommand(fallbackMethod = "hystrixTimeoutFallback", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")
     })
     @Override
     public String hystrixTimeout(Integer id) {
-        Integer seconds = 5;
-        int age = 10 / 0;
-        /*try {
+        Integer seconds = 3;
+//        int age = 10 / 0;
+        try {
             TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
         return "访问超时，线程名称：" + Thread.currentThread().getName() + ",id = " + id + ", 耗时： " + seconds + "秒，(*^_^*)";
     }
 
