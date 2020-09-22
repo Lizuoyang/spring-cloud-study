@@ -1,5 +1,6 @@
 package com.gudongcheng.springcloud.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gudongcheng.springcloud.entities.Payment;
 import com.gudongcheng.springcloud.mapper.PaymentMapper;
@@ -71,5 +72,27 @@ public class PaymentServiceImpl extends ServiceImpl<PaymentMapper, Payment> impl
 
     public String hystrixTimeoutFallback(Integer id) {
         return "系统繁忙或者运行报错，线程名称：" + Thread.currentThread().getName() + ",id = " + id + "/(ㄒoㄒ)/~~";
+    }
+    /** ============== 服务熔断 ============== */
+    @HystrixCommand(fallbackMethod = "hystrixCircuitBreakFallBack",commandProperties = {
+            //是否开启断路器模式
+            @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),
+            //请求数达到多少次后才开始计算
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            //当断路器打开后，多久恢复正常，休眠窗口期
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"),
+            //错误率达到多少开启断路器模式（跳闸）
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60")
+    })
+    @Override
+    public String hystrixCircuitBreak(Integer id) {
+        if (id < 0) {
+            throw new RuntimeException("id不能为负数");
+        }
+        return IdUtil.simpleUUID();
+    }
+
+    public String hystrixCircuitBreakFallBack(Integer id) {
+        return Thread.currentThread().getName() + "id不能为负数,/(ㄒoㄒ)/~~";
     }
 }

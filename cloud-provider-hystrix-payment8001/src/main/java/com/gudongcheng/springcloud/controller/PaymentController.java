@@ -121,4 +121,9 @@ public class PaymentController {
     public String hystrixTimeout(@PathVariable Integer id) {
         return paymentService.hystrixTimeout(id);
     }
+
+    @GetMapping("/payment/hystrix/circuit-break/{id}")
+    public String hystrixCircuitBreak(@PathVariable("id") Integer id) {
+        return paymentService.hystrixCircuitBreak(id);
+    }
 }

@@ -71,6 +71,13 @@ public interface PaymentService extends IService<Payment> {
      */
     String hystrixTimeout(Integer id);
 
+    /**
+     * 测试服务熔断
+     * @param id
+     * @return
+     */
+    String hystrixCircuitBreak(Integer id);
+
 
 
 }
